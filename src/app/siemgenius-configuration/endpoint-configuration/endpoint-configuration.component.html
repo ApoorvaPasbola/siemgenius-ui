@@ -1,0 +1,19 @@
+<p-panel header="Endpoint Config" >
+  <form [formGroup]="endpointConfigurationForm" >
+      <!--  Schedule Field   -->
+      <div >
+        <label style="margin-left: auto" > Schedule </label>
+        <input class="ml-3 w-7rem" type="text" pInputText formControlName="schedule"/>
+      </div>
+
+      <!-- Protocols Input Fieldd  -->
+    <div class="proto-options mt-4" >
+      <label>Protocols:</label>
+      <div *ngFor="let protocols of getProtocols()" class="field-checkbox">
+        <p-radioButton class="ml-2" [inputId]="protocols.value" [value]="protocols.value" formControlName="protocol"></p-radioButton>
+        <label [for]="protocols.value" class="ml-2">{{ protocols.key }}</label>
+      </div>
+    </div>
+  </form>
+</p-panel>
+

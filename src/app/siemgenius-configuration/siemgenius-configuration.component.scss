@@ -1,0 +1,31 @@
+.components-container{
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  position: relative;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  justify-content: space-around;
+  margin-left: 1%;
+  margin-right: 1%;
+  .left-side{
+    flex-grow:1;
+    margin-top: 1%;
+    max-width: 34%;
+    .app-sample-data {
+      height: 800px;
+    }
+  }
+  .right-side{
+    flex-grow: 1;
+    margin-top: 1%;
+    max-width: 64%;
+    .bttn {
+      float: right;
+      margin: 5px;
+    }
+
+  }
+}
+

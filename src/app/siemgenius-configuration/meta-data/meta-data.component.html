@@ -1,0 +1,119 @@
+<p-panel header="Meta data">
+  <div class="card">
+    <p-table [styleClass]="sizes[0].class" wid [value]="tableObjects" [scrollable]="true" scrollHeight="475px" dataKey="id" editMode="row"
+      [tableStyle]="{'min-width': '1em'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="table-header">Path</th>
+          <th class="table-header">Fixed</th>
+          <th class="table-header">Formula</th>
+          <th class="table-header">Arguments</th>
+          <th class="table-header">Populate with AI</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tableObject let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="tableObject">
+          <td [pEditableColumn]="tableObject.path" pEditableColumnField="path">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText disabled="true" type="text" [(ngModel)]="tableObject.path">
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{tableObject.path}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="tableObject.fixed" pEditableColumnField="fixed">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown [options]="fixedValues" appendTo="body" [(ngModel)]="tableObject.fixed"
+                  [style]="{'width':'8rem'}"></p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{tableObject.fixed}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="tableObject.formula" pEditableColumnField="formula">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown [options]="formulaValues" appendTo="body" [(ngModel)]="tableObject.formula" (onChange)="updateArg(ri)"
+                  [style]="{'width':'80%'}"></p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{tableObject.formula}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="tableObject.arguments" pEditableColumnField="arguments">
+            <p-cellEditor>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'RANGE'">
+                <div class="flex flex-column gap-2">
+                  <div style="display:flex; flex-direction: row; align-items: center">
+                  <label for="min">Min</label>
+                  <input pInputText class="p-inputtext-sm w-7rem ml-3 " id="min" type="number"  [(ngModel)]="tableObject.arguments?.range[0]" />
+                  </div>
+                  <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                  <label for="max">Max</label>
+                  <input pInputText class="p-inputtext-sm w-7rem ml-3" type="number" [(ngModel)]="tableObject.arguments?.range[1]" />
+                  </div>
+              </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'INDEX'">
+
+                <div class="flex flex-row gap-3 align-items-center">
+                  <label for="offset">Offset</label>
+                  <input pInputText class="p-inputtext-sm w-5rem" id="min" type="number"  [(ngModel)]="tableObject.arguments.offset" />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'ENUM' || tableObject.formula == 'ENUM_UNIQUE' ||  tableObject.formula == 'EXPRESSION'">
+                <div class="flex flex-column gap-2">
+                  <label for="max">List</label>
+                  <input pInputText class="p-inputtext-sm"  id="min" [(ngModel)]="tableObject.arguments.list" (change)="fixListValues($event,ri)"/>
+              </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'EXPRESSION'">
+                <div class="flex flex-column gap-2">
+                  <label for="max">Expression</label>
+                  <input pInputText class="p-inputtext-sm"  id="min" [(ngModel)]="tableObject.arguments.expression" />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'BOOLEAN'">
+                <div class="flex flex-column gap-2">
+                  <div style="display:flex; flex-direction: row; align-items: center">
+                  <label for="max">Boolean</label>
+                  <input pInputText class="p-inputtext-sm w-7rem ml-3" type="text"  id="min" [(ngModel)]="tableObject.arguments.boolean" />
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'GENAI'">
+                <div class="flex flex-column gap-2">
+                  <label for="max">prompt</label>
+                  <input pInputText class="p-inputtext-sm" type="text"  id="min" [(ngModel)]="tableObject.arguments.promptKey" />
+                  <label for="max">count</label>
+                  <input pInputText class="p-inputtext-sm" type="number"  id="min" [(ngModel)]="tableObject.arguments.count" />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="input" *ngIf="tableObject.formula == 'CURRENT_TIME'">
+                <div class="flex flex-column gap-2">
+                  <label for="min">Format</label>
+                  <input pInputText class="p-inputtext-sm" id="min" [(ngModel)]="tableObject.arguments.format" />
+                  <label for="max">Latency in Seconds</label>
+                  <input pInputText  class="p-inputtext-sm" id="max" [(ngModel)]="tableObject.arguments.latencySeconds" />
+              </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{tableObject.arguments | json }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td *ngIf="tableObject.formula == 'ENUM' || tableObject.formula == 'ENUM_UNIQUE'" >
+            <button type="submit" class="m-3" style="border: none; background: transparent;" (click)="callAI(ri)">
+              <img ngSrc="assets/microchip.png" height="30" width="30" alt=""/>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-panel>

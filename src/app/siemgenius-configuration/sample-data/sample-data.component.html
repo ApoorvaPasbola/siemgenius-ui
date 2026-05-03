@@ -1,0 +1,6 @@
+<p-panel header="Json Data" >
+  <span class="p-float-label" >
+    <textarea (blur)="sampleDataUpdated()" [formControl]="sampleDataInput" style="width: 100%;max-height: 320px" [class]="sampleDataInput.invalid? 'ng-invalid ng-dirty':'' " [autoResize]="true" id="textarea-input" pInputTextarea></textarea>
+    <small *ngIf="sampleDataInput.errors?.['inValidJsonError']" class="p-error">Json Invalid </small>
+</span>
+</p-panel>

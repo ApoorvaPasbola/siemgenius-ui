@@ -1,0 +1,28 @@
+<div class="components-container ">
+  <!--  Left Side Form  -->
+  <div class="left-side">
+    <!-- Sample Data Container  -->
+    <div class="sample-data" pTooltip="Please enter the initial JSON data" tooltipPosition="bottom">
+      <app-sample-data (sampleDataUpdatedEvent)="updateMetaDataTable()" ></app-sample-data>
+    </div>
+    <!-- Endpoint Configuration Container  -->
+    <div class="endpoint-configuration mt-2" pTooltip="Configure endpoints for the final output">
+      <app-endpoint-configuration></app-endpoint-configuration>
+    </div>
+
+  </div>
+  <!-- Right Side Form  -->
+  <div class="right-side" *ngIf="tableObjects.length > 0">
+    <!-- Meta Data Container  -->
+    <div class="meta-data ml-2" id="metadata"
+      pTooltip="This is the matadata selector. Please click on each field to edit" tooltipPosition="top">
+      <app-meta-data [fixedValues]="fixedValues" [formulaValues]="formulaValues"
+        [tableObjects]="tableObjects"></app-meta-data>
+    </div>
+    <div class="mt-4" style="float: right; flex: auto;">
+      <p-button class="ml-2" *ngIf="tableObjects.length > 0" label="Submit" severity="success"
+        (onClick)="submitData()"></p-button>
+    </div>
+  </div>
+  <p-toast position="bottom-center" key="bc"></p-toast>
+</div>
